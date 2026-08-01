@@ -1,9 +1,9 @@
-# Base64s
-# Base64s (with "s" standing for "secure") is a derivative encoding scheme of Base64.
+# Base64S
+# Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.
 #
 # The MIT License
 #
-# Copyright (c) 2023 Takashi Harano
+# Copyright 2023 Takashi Harano
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,25 +28,25 @@
 #
 # [Encode]
 #  String:
-#   $s = Get-Base64sEncodedString "<STRING>" "<KEY>"
+#   $s = Get-Base64SEncodedString "<STRING>" "<KEY>"
 #
 #  Byte[]:
 #   [byte[]]$b = Get-Content "C:\test\file.bin" -Encoding Byte
-#   $s = Get-Base64sEncodedString $b "<KEY>"
+#   $s = Get-Base64SEncodedString $b "<KEY>"
 #
 # [Decode]
 #  String:
-#   $s = Get-Base64sDecodedString "<BASE64_STRING>" "<KEY>"
+#   $s = Get-Base64SDecodedString "<BASE64_STRING>" "<KEY>"
 #
 #  Byte[]:
-#   $b = Get-Base64sDecodedBytes "<BASE64_STRING>" "<KEY>"
+#   $b = Get-Base64SDecodedBytes "<BASE64_STRING>" "<KEY>"
 #   Set-Content "C:\tmp\file.bin" -Value $b -Encoding Byte
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # Byte array or plain text to Base64 encoded string with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64sEncodedString {
+function Get-Base64SEncodedString {
     Param (
         $Src,
         $Key
@@ -60,7 +60,7 @@ function Get-Base64sEncodedString {
 
     $kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
 
-    $buf = Get-EncdedBytes $b $kb
+    $buf = Get-EncodedBytes $b $kb
     $encoded = [System.Convert]::ToBase64String($buf)
 
     return $encoded
@@ -69,7 +69,7 @@ function Get-Base64sEncodedString {
 #------------------------------------------------------------------------------
 # Base64 encoded string to Byte array with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64sDecodedBytes {
+function Get-Base64SDecodedBytes {
     Param (
         $Src,
         $Key
@@ -77,20 +77,20 @@ function Get-Base64sDecodedBytes {
 
     $buf = [System.Convert]::FromBase64String($Src)
     $kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
-    $arr = Get-DecdedBytes $buf $kb
+    $arr = Get-DecodedBytes $buf $kb
     return $arr
 }
 
 #------------------------------------------------------------------------------
 # Base64 encoded string to Plain text with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64sDecodedString {
+function Get-Base64SDecodedString {
     Param (
         $Src,
         $Key
     )
 
-    $buf = Get-Base64sDecodedBytes $Src $Key
+    $buf = Get-Base64SDecodedBytes $Src $Key
     if ($buf -eq $null) {
         return ""
     }
@@ -99,7 +99,7 @@ function Get-Base64sDecodedString {
 }
 
 #------------------------------------------------------------------------------
-function Get-EncdedBytes {
+function Get-EncodedBytes {
     Param (
         [byte[]]$Src,
         [byte[]]$Key
@@ -132,7 +132,7 @@ function Get-EncdedBytes {
 }
 
 #------------------------------------------------------------------------------
-function Get-DecdedBytes {
+function Get-DecodedBytes {
     Param (
         [byte[]]$Src,
         [byte[]]$Key

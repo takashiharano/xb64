@@ -14,7 +14,7 @@ function Test-Decoding {
         $B64,
         $Key
     )
-    $s = Get-Base64sDecodedString $B64 $Key
+    $s = Get-Base64SDecodedString $B64 $Key
     $res = "`"" + $s + "`""
     Write-Host $res
 }
@@ -52,7 +52,7 @@ Test-Decoding "GRsZAA==" "123"
 
 Write-Host "-------------------------------"
 [byte[]]$b = Get-Content "C:\test\img.jpg" -Encoding Byte
-$s = Get-Base64sEncodedString $b "xyz"
+$s = Get-Base64SEncodedString $b "xyz"
 Write-Host $s
 
 $b = Get-Base64SDecodedBytes $s "xyz"
