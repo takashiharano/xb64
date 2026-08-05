@@ -1,7 +1,6 @@
 ' Base64S
 ' Copyright 2023 Takashi Harano
-' Released under the MIT license
-' Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.
+' Released under the MIT License
 
 Option Explicit
 

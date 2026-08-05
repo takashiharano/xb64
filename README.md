@@ -1,10 +1,10 @@
 Base64S
 =====================
 
-Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.  
-The data to be encoded is XORed with the given key before encoding.  
-The encrypted data is seemingly Base64 encoded characters, but it is impossible to decode in Base64.  
-The detail of the mechanism is available at https://libutil.com/b64s/
+Base64S (with the “S” standing for “Secure”) is a simple reversible cipher based on XOR and Base64 encoding.
+Before being Base64-encoded, the input data is XORed with the provided key.
+The resulting text resembles standard Base64-encoded data, but it cannot be decoded correctly with a standard Base64 decoder alone.
+Details of the algorithm are available at https://libutil.com/b64s/.
 
 ## Usage
 Java:
