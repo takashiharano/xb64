@@ -1,7 +1,7 @@
-' Base64s
+' Base64S
 ' Copyright 2023 Takashi Harano
 ' Released under the MIT license
-' Base64s (with "s" standing for "secure") is a derivative encoding scheme of Base64.
+' Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.
 
 Option Explicit
 

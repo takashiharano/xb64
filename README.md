@@ -1,10 +1,10 @@
-Base64s
+Base64S
 =====================
 
-Base64s (with "s" standing for "secure") is a derivative encoding scheme of Base64.  
+Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.  
 The data to be encoded is XORed with the given key before encoding.  
 The encrypted data is seemingly Base64 encoded characters, but it is impossible to decode in Base64.  
-The detail of the mechanism is available at https://b64s.com/
+The detail of the mechanism is available at https://libutil.com/b64s/
 
 ## Usage
 Java:
@@ -15,8 +15,8 @@ String decoded = Base64s.decodeString("GRsZAA==", "xyz");
 
 JavaScript:
 ```JavaSctipt
-var encoded = base64s.encode('abc', 'xyz');
-var decoded = base64s.decode('GRsZAA==', 'xyz');
+var encoded = base64S.encode('abc', 'xyz');
+var decoded = base64S.decode('GRsZAA==', 'xyz');
 ```
 
 Python:
@@ -27,8 +27,8 @@ decoded = base64s.decode_string('GRsZAA==', 'xyz')
 
 PowerShell:
 ```powershell
-$encoded = Get-Base64sEncodedString "abc" "xyz"
-$decoded = Get-Base64sDecodedString "GRsZAA==" "xyz"
+$encoded = Get-Base64SEncodedString "abc" "xyz"
+$decoded = Get-Base64SDecodedString "GRsZAA==" "xyz"
 ```
 
 Visual Basic:
@@ -40,4 +40,4 @@ decoded = Base64s.DecodeString("GRsZAA==", "xyz")
 ```
 
 ## Notice
-Base64s is not intended to be used where secrecy is of any concern.
+Base64S is not intended to be used where secrecy is of any concern.

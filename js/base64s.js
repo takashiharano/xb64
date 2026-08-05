@@ -1,8 +1,8 @@
 /*!
  * Base64S
  * Copyright 2023 Takashi Harano
- * Released under the MIT license
- * https://b64s.com/
+ * Released under the MIT License
+ * https://libutil.com/b64s/
  */
 var base64s = {
   /**
