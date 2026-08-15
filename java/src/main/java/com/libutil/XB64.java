@@ -24,6 +24,7 @@
 package com.libutil;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
@@ -99,14 +100,14 @@ public class XB64 {
     if (src == null) {
       return null;
     }
-    String endoded = null;
+    String encoded = null;
     try {
       byte[] srcBytes = src.getBytes(charsetName);
-      endoded = encode(srcBytes, key);
+      encoded = encode(srcBytes, key);
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
-    return endoded;
+    return encoded;
   }
 
   /**
@@ -130,12 +131,7 @@ public class XB64 {
     if (key == null) {
       key = "";
     }
-    byte[] k = null;
-    try {
-      k = key.getBytes(DEFAULT_CHARSET);
-    } catch (UnsupportedEncodingException e) {
-      // never reached
-    }
+    byte[] k = key.getBytes(StandardCharsets.UTF_8);
     byte[] buf = Base64.getDecoder().decode(src);
     return _decode(buf, k);
   }
@@ -203,7 +199,7 @@ public class XB64 {
 
     int j = i;
     for (i = 0; i < d; i++) {
-      buf[j] = (byte) (255 ^ key[j % key.length]);
+      buf[j] = (byte) (255 ^ key[j]);
       j++;
     }
 
