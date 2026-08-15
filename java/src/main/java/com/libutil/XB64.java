@@ -152,8 +152,8 @@ public class XB64 {
    *          The key used for the XOR operation
    * @return A decoded string
    */
-  public static String decodeString(String src, String key) {
-    return decodeString(src, key, DEFAULT_CHARSET);
+  public static String decodeToString(String src, String key) {
+    return decodeToString(src, key, DEFAULT_CHARSET);
   }
 
   /**
@@ -170,7 +170,7 @@ public class XB64 {
    *          The charset used to decode the resulting bytes into a string
    * @return A decoded string
    */
-  public static String decodeString(String src, String key, String charsetName) {
+  public static String decodeToString(String src, String key, String charsetName) {
     if (src == null) {
       return null;
     }

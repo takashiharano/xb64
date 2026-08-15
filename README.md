@@ -10,7 +10,7 @@ Details of the algorithm are available at https://libutil.com/xb64/.
 Java:
 ```Java
 String encoded = XB64.encode("abc", "xyz");
-String decoded = XB64.decodeString("GRsZAA==", "xyz");
+String decoded = XB64.decodeToString("GRsZAA==", "xyz");
 ```
 
 JavaScript:

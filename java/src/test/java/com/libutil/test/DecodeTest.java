@@ -43,7 +43,7 @@ public class DecodeTest {
   }
 
   private static void test(String s, String k, String expected) {
-    String r = XB64.decodeString(s, k);
+    String r = XB64.decodeToString(s, k);
     assertEquals(k, expected, r);
   }
 
