@@ -27,12 +27,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
 /**
- * Base64s (with "s" standing for "secure") is a derivative encoding scheme of
- * Base64.<br>
- * This class implements an encoder and a decoder of the Base64 encoding scheme
- * with XOR.
+ * XB64 (XORed Base64) is a simple reversible encoding scheme based on XOR and
+ * Base64 encoding.<br>
+ * This class implements an encoder and decoder for XB64.
  */
-public class Base64s {
+public class XB64 {
 
   /**
    * The default charset to be used to encode/decode a string.
@@ -40,15 +39,15 @@ public class Base64s {
   public static final String DEFAULT_CHARSET = "UTF-8";
 
   /**
-   * Encodes the given byte array into a String using the Base64 encoding scheme.
-   * Performs a bitwise XOR by source and key before encoding.<br>
-   * Note that if the key is empty, it's normal Base64 encoding.
+   * Encodes the given byte array into a String using the XB64 encoding scheme.
+   * Performs a bitwise XOR between the source and key before Base64 encoding.<br>
+   * If the key is empty, normal Base64 encoding is performed.
    *
    * @param src
    *          The byte array to be encoded
    * @param key
-   *          The key to take XOR
-   * @return A String containing the resulting Base64 encoded characters
+   *          The key used for the XOR operation
+   * @return A String containing the resulting Base64-encoded characters
    */
   public static String encode(byte[] src, String key) {
     if (src == null) {
@@ -69,14 +68,14 @@ public class Base64s {
   }
 
   /**
-   * Encodes the specified string into a String using the Base64 encoding scheme.
-   * Performs a bitwise XOR by source and key before encoding.<br>
-   * Note that if the key is empty, it's normal Base64 encoding.
+   * Encodes the specified string into a String using the XB64 encoding scheme.
+   * Performs a bitwise XOR between the source and key before Base64 encoding.<br>
+   * If the key is empty, normal Base64 encoding is performed.
    *
    * @param src
-   *          The string to be encode
+   *          The string to be encoded
    * @param key
-   *          The key to take XOR
+   *          The key used for the XOR operation
    * @return An encoded string
    */
   public static String encode(String src, String key) {
@@ -84,16 +83,16 @@ public class Base64s {
   }
 
   /**
-   * Encodes the specified string into a String using the Base64 encoding scheme.
-   * Performs a bitwise XOR by source and key before encoding.<br>
-   * Note that if the key is empty, it's normal Base64 encoding.
+   * Encodes the specified string using the XB64 encoding scheme. Performs a
+   * bitwise XOR between the source and key before Base64 encoding.<br>
+   * If the key is empty, normal Base64 encoding is performed.
    *
    * @param src
    *          The string to be encoded
    * @param key
-   *          The key to take XOR
+   *          The key used for the XOR operation
    * @param charsetName
-   *          The charset to be used to decode the bytes
+   *          The charset used to encode the string into bytes
    * @return An encoded string
    */
   public static String encode(String src, String key, String charsetName) {
@@ -111,18 +110,18 @@ public class Base64s {
   }
 
   /**
-   * Decodes a Base64 encoded String into a newly-allocated byte array using the
-   * Base64 encoding scheme. Performs a bitwise XOR by decoded byte array and the
-   * key.<br>
-   * Note that if the key is empty, it's normal Base64 decoding.
+   * Decodes the specified XB64-encoded string into a newly allocated byte array.
+   * Performs Base64 decoding followed by a bitwise XOR between the decoded bytes
+   * and the key.<br>
+   * If the key is empty, normal Base64 decoding is performed.
    *
    * @param src
    *          The string to be decoded
    * @param key
-   *          The key to take XOR
-   * @return A newly-allocated byte array containing the decoded bytes.
+   *          The key used for the XOR operation
+   * @return A newly allocated byte array containing the decoded bytes
    * @throws RuntimeException
-   *           If failed to decode
+   *           If decoding fails
    */
   public static byte[] decode(String src, String key) throws RuntimeException {
     if (src == null) {
@@ -142,15 +141,15 @@ public class Base64s {
   }
 
   /**
-   * Decodes a Base64 encoded String into an original string using the Base64
-   * encoding scheme. Performs a bitwise XOR by decoded byte array and the
+   * Decodes the specified XB64-encoded string into the original string. Performs
+   * Base64 decoding followed by a bitwise XOR between the decoded bytes and the
    * key.<br>
-   * Note that if the key is empty, it's normal Base64 decoding.
+   * If the key is empty, normal Base64 decoding is performed.
    *
    * @param src
    *          The string to be decoded
    * @param key
-   *          The key to take XOR
+   *          The key used for the XOR operation
    * @return A decoded string
    */
   public static String decodeString(String src, String key) {
@@ -158,17 +157,17 @@ public class Base64s {
   }
 
   /**
-   * Decodes a Base64 encoded String into an original string using the Base64
-   * encoding scheme. Performs a bitwise XOR by decoded byte array and the
+   * Decodes the specified XB64-encoded string into the original string. Performs
+   * Base64 decoding followed by a bitwise XOR between the decoded bytes and the
    * key.<br>
-   * Note that if the key is empty, it's normal Base64 decoding.
+   * If the key is empty, normal Base64 decoding is performed.
    *
    * @param src
    *          The string to be decoded
    * @param key
-   *          The key to take XOR
+   *          The key used for the XOR operation
    * @param charsetName
-   *          The charset to be used to decode
+   *          The charset used to decode the resulting bytes into a string
    * @return A decoded string
    */
   public static String decodeString(String src, String key, String charsetName) {

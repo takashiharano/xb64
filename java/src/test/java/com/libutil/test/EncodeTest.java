@@ -1,6 +1,6 @@
 package com.libutil.test;
 
-import com.libutil.Base64s;
+import com.libutil.XB64;
 
 public class EncodeTest {
 
@@ -43,12 +43,12 @@ public class EncodeTest {
   }
 
   private static void test(String s, String key, String expected) {
-    String r = Base64s.encode(s, key);
+    String r = XB64.encode(s, key);
     assertEquals(key, expected, r);
   }
 
   private static void test(byte[] b, String key, String expected) {
-    String r = Base64s.encode(b, key);
+    String r = XB64.encode(b, key);
     assertEquals(key, expected, r);
   }
 

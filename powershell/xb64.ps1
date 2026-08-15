@@ -1,5 +1,4 @@
-# Base64S
-# Base64S (with "S" standing for "secure") is a derivative encoding scheme of Base64.
+# XB64 - XORed Base64
 #
 # The MIT License
 #
@@ -24,29 +23,29 @@
 # THE SOFTWARE.
 #------------------------------------------------------------------------------
 # Usage:
-# . ".\base64s.ps1"
+# . ".\xb64.ps1"
 #
 # [Encode]
 #  String:
-#   $s = Get-Base64SEncodedString "<STRING>" "<KEY>"
+#   $s = Get-XB64EncodedString "<STRING>" "<KEY>"
 #
 #  Byte[]:
 #   [byte[]]$b = Get-Content "C:\test\file.bin" -Encoding Byte
-#   $s = Get-Base64SEncodedString $b "<KEY>"
+#   $s = Get-XB64EncodedString $b "<KEY>"
 #
 # [Decode]
 #  String:
-#   $s = Get-Base64SDecodedString "<BASE64_STRING>" "<KEY>"
+#   $s = Get-XB64DecodedString "<BASE64_STRING>" "<KEY>"
 #
 #  Byte[]:
-#   $b = Get-Base64SDecodedBytes "<BASE64_STRING>" "<KEY>"
+#   $b = Get-XB64DecodedBytes "<BASE64_STRING>" "<KEY>"
 #   Set-Content "C:\tmp\file.bin" -Value $b -Encoding Byte
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # Byte array or plain text to Base64 encoded string with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64SEncodedString {
+function Get-XB64EncodedString {
     Param (
         $Src,
         $Key
@@ -69,7 +68,7 @@ function Get-Base64SEncodedString {
 #------------------------------------------------------------------------------
 # Base64 encoded string to Byte array with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64SDecodedBytes {
+function Get-XB64DecodedBytes {
     Param (
         $Src,
         $Key
@@ -84,13 +83,13 @@ function Get-Base64SDecodedBytes {
 #------------------------------------------------------------------------------
 # Base64 encoded string to Plain text with XORing source and key
 #------------------------------------------------------------------------------
-function Get-Base64SDecodedString {
+function Get-XB64DecodedString {
     Param (
         $Src,
         $Key
     )
 
-    $buf = Get-Base64SDecodedBytes $Src $Key
+    $buf = Get-XB64DecodedBytes $Src $Key
     if ($buf -eq $null) {
         return ""
     }

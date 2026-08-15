@@ -3,18 +3,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.libutil</groupId>
-  <artifactId>base64s</artifactId>
-  <version>1.1.1</version>
+  <artifactId>xb64</artifactId>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Base64s</name>
-  <description>Base64s (with "s" standing for "secure") is a derivative encoding scheme of Base64.</description>
-  <url>https://libutil.com/base64s/</url>
+  <name>XB64</name>
+  <description>XB64 (XORed Base64) is a simple reversible encoding scheme based on XOR and Base64 encoding.</description>
+  <url>https://libutil.com/xb64/</url>
 
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>https://opensource.org/licenses/MIT</url>
+      <url>https://opensource.org/license/MIT</url>
     </license>
   </licenses>
 
@@ -26,40 +26,34 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/takashiharano/base64s.git</connection>
-    <developerConnection>scm:git:ssh://github.com:takashiharano/base64s.git</developerConnection>
-    <url>https://github.com/takashiharano/base64s</url>
+    <connection>scm:git:git://github.com/takashiharano/xb64.git</connection>
+    <developerConnection>scm:git:ssh://github.com:takashiharano/xb64.git</developerConnection>
+    <url>https://github.com/takashiharano/xb64</url>
   </scm>
 
   <properties>
-    <java.version>1.8</java.version>
+    <maven.compiler.release>8</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <build>
-    <!--<finalName>${project.artifactId}</finalName>-->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <compilerVersion>${java.version}</compilerVersion>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
+        <version>3.15.0</version>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.1</version>
+        <version>3.4.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>attach-sources</id>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
           </execution>
         </executions>
@@ -68,7 +62,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.12.0</version>
         <configuration>
           <author>true</author>
           <source>1.8</source>
@@ -88,47 +82,32 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.11.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.2.7</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
-  <profiles>
-    <profile>
-      <id>release-sign-artifacts</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

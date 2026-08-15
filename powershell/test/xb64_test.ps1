@@ -1,11 +1,11 @@
-. "..\base64s.ps1"
+. "..\xb64.ps1"
 
 function Test-Encoding {
     Param (
         $Src,
         $Key
     )
-    $s = Get-Base64sEncodedString $Src $Key
+    $s = Get-XB64EncodedString $Src $Key
     Write-Host $s
 }
 
@@ -14,7 +14,7 @@ function Test-Decoding {
         $B64,
         $Key
     )
-    $s = Get-Base64SDecodedString $B64 $Key
+    $s = Get-XB64DecodedString $B64 $Key
     $res = "`"" + $s + "`""
     Write-Host $res
 }
@@ -52,8 +52,8 @@ Test-Decoding "GRsZAA==" "123"
 
 Write-Host "-------------------------------"
 [byte[]]$b = Get-Content "C:\test\img.jpg" -Encoding Byte
-$s = Get-Base64SEncodedString $b "xyz"
+$s = Get-XB64EncodedString $b "xyz"
 Write-Host $s
 
-$b = Get-Base64SDecodedBytes $s "xyz"
+$b = Get-XB64DecodedBytes $s "xyz"
 Set-Content "C:\tmp\img.jpg" -Value $b -Encoding Byte

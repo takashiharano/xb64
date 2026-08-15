@@ -1,43 +1,43 @@
-Base64S
+XB64
 =====================
 
-Base64S (with the “S” standing for “Secure”) is a simple reversible cipher based on XOR and Base64 encoding.
+XB64 (XORed Base64) is a simple reversible encoding method based on XOR and Base64 encoding.
 Before being Base64-encoded, the input data is XORed with the provided key.
 The resulting text resembles standard Base64-encoded data, but it cannot be decoded correctly with a standard Base64 decoder alone.
-Details of the algorithm are available at https://libutil.com/b64s/.
+Details of the algorithm are available at https://libutil.com/xb64/.
 
 ## Usage
 Java:
 ```Java
-String encoded = Base64s.encode("abc", "xyz");
-String decoded = Base64s.decodeString("GRsZAA==", "xyz");
+String encoded = XB64.encode("abc", "xyz");
+String decoded = XB64.decodeString("GRsZAA==", "xyz");
 ```
 
 JavaScript:
 ```JavaSctipt
-var encoded = base64S.encode('abc', 'xyz');
-var decoded = base64S.decode('GRsZAA==', 'xyz');
+var encoded = xb64.encode('abc', 'xyz');
+var decoded = xb64.decode('GRsZAA==', 'xyz');
 ```
 
 Python:
 ```Python
-encoded = base64s.encode_string('abc', 'xyz')
-decoded = base64s.decode_string('GRsZAA==', 'xyz')
+encoded = xb64.encode_string('abc', 'xyz')
+decoded = xb64.decode_string('GRsZAA==', 'xyz')
 ```
 
 PowerShell:
 ```powershell
-$encoded = Get-Base64SEncodedString "abc" "xyz"
-$decoded = Get-Base64SDecodedString "GRsZAA==" "xyz"
+$encoded = Get-XB64EncodedString "abc" "xyz"
+$decoded = Get-XB64DecodedString "GRsZAA==" "xyz"
 ```
 
 Visual Basic:
 ```Visual Basic
 Dim encoded As String
 Dim decoded As String
-encoded = Base64s.EncodeString("abc", "xyz")
-decoded = Base64s.DecodeString("GRsZAA==", "xyz")
+encoded = XB64.EncodeString("abc", "xyz")
+decoded = XB64.DecodeString("GRsZAA==", "xyz")
 ```
 
 ## Notice
-Base64S is not intended to be used where secrecy is of any concern.
+XB64 is not intended to be used where secrecy is of any concern.

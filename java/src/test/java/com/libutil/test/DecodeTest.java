@@ -1,6 +1,6 @@
 package com.libutil.test;
 
-import com.libutil.Base64s;
+import com.libutil.XB64;
 
 public class DecodeTest {
 
@@ -43,12 +43,12 @@ public class DecodeTest {
   }
 
   private static void test(String s, String k, String expected) {
-    String r = Base64s.decodeString(s, k);
+    String r = XB64.decodeString(s, k);
     assertEquals(k, expected, r);
   }
 
   private static void test(String s, String k, byte[] expected) {
-    byte[] r = Base64s.decode(s, k);
+    byte[] r = XB64.decode(s, k);
     Log.out("k=" + k);
     for (int i = 0; i < r.length; i++) {
       Log.out("EXP=" + expected[i] + " : ACTUAL=" + r[i]);

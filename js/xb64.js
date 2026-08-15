@@ -1,19 +1,19 @@
 /*!
- * Base64S
+ * XB64 - XORed Base64
  * Copyright 2023 Takashi Harano
  * Released under the MIT License
- * https://libutil.com/b64s/
+ * https://libutil.com/xb64/
  */
-var base64s = {
+var xb64 = {
   /**
-   * Plain text / Byte array to Base64S encoded string
+   * Plain text / Byte array to XB64 encoded string
    */
   encode: function(s, k) {
     if (s == null) return null;
-    var a = ((typeof s == 'string') ? base64s.UTF8.toByteArray(s) : s);
-    var x = base64s.UTF8.toByteArray(k);
-    var b = base64s._encode(a, x);
-    return base64s.Base64.encode(b);
+    var a = ((typeof s == 'string') ? xb64.UTF8.toByteArray(s) : s);
+    var x = xb64.UTF8.toByteArray(k);
+    var b = xb64._encode(a, x);
+    return xb64.Base64.encode(b);
   },
 
   _encode: function(a, k) {
@@ -35,14 +35,14 @@ var base64s = {
   },
 
   /**
-   * Base64S encoded string to Byte array / Plain text
+   * XB64 encoded string to Byte array / Plain text
    */
   decode: function(s, k, byB) {
     if (s == null) return null;
-    var b = base64s.Base64.decode(s);
-    var x = base64s.UTF8.toByteArray(k);
-    var a = base64s._decode(b, x);
-    if (!byB) a = base64s.UTF8.fromByteArray(a);
+    var b = xb64.Base64.decode(s);
+    var x = xb64.UTF8.toByteArray(k);
+    var a = xb64._decode(b, x);
+    if (!byB) a = xb64.UTF8.fromByteArray(a);
     return a;
   },
 
@@ -138,7 +138,7 @@ var base64s = {
       if (!b) return null;
       var e = '';
       for (var i = 0; i < b.length; i++) {
-        e += '%' + base64s.toHex(b[i]);
+        e += '%' + xb64.toHex(b[i]);
       }
       return decodeURIComponent(e);
     }

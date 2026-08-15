@@ -1,11 +1,11 @@
-' Base64S
+' XB64 - XORed Base64
 ' Copyright 2023 Takashi Harano
 ' Released under the MIT License
 
 Option Explicit
 
 ''
-' Plain text to Base64 encoded string with XORing source and key
+' Plain text to a Base64-encoded string by XORing the source with a key
 '
 Public Function EncodeString(str As String, key As String) As String
     If str = "" Then
@@ -69,7 +69,7 @@ Public Function Encode(src() As Byte, key As String) As String
 End Function
 
 ''
-' Base64 encoded string to Plain text with XORing source and key
+' Base64-encoded string to plain text by XORing the source with a key
 '
 Public Function DecodeString(b64 As String, key As String) As String
     If b64 = "" Then

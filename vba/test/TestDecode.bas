@@ -18,7 +18,7 @@ End Sub
 
 Private Sub DoTest(exp As String, key As String, b64 As String)
     Dim r As String
-    r = Base64s.DecodeString(b64, key)
+    r = XB64.DecodeString(b64, key)
     Dim res As String
     Dim status As String
     status = "NG"

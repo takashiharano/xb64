@@ -1,8 +1,8 @@
 #------------------------------------------------------------------------------
-# Base64s
+# XB64 - XORed Base64
 # Copyright 2023 Takashi Harano
 # Released under the MIT License
-# https://libutil.com/b64s/
+# https://libutil.com/xb64/
 #------------------------------------------------------------------------------
 import base64
 

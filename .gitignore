@@ -14,8 +14,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-vba/Base64S.xlsm
-vba/~$Base64S.xlsm
+vba/XB64.xlsm
+vba/~$XB64.xlsm
 js/_linter.txt
 js/.eslintrc.json
 js/_ESLint.bat
