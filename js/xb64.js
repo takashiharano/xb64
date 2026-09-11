@@ -6,17 +6,19 @@
  */
 var xb64 = {
   /**
-   * Encodes a byte array to an XB64 string.
+   * Encodes a byte array or string to an XB64 string.
    *
+   * Strings are converted to UTF-8 before XB64 encoding.
    * If the key is null, undefined, or empty, the source is encoded
    * as standard Base64 without XOR processing.
    *
-   * @param {number[]} src Source byte array.
+   * @param {number[]|string} src Source byte array or string.
    * @param {string} key XOR key. The UTF-8 encoded key must be 255 bytes or less.
    * @returns {string|null} XB64 encoded string, or null if src is null.
    */
   encode: function(src, key) {
     if (src == null) return null;
+    if (typeof src == 'string') src = xb64.UTF8.toByteArray(src);
     var k = xb64.UTF8.toByteArray(key);
     var ln = src.length;
     var kl = k.length;
@@ -35,23 +37,6 @@ var xb64 = {
       b.push(d);
     }
     return xb64.Base64.encode(b);
-  },
-
-  /**
-   * Encodes a string to an XB64 string.
-   *
-   * The source string is converted to UTF-8 before XB64 encoding.
-   * If the key is null, undefined, or empty, the UTF-8 byte sequence
-   * is encoded as standard Base64 without XOR processing.
-   *
-   * @param {string} src Source string.
-   * @param {string} key XOR key. The UTF-8 encoded key must be 255 bytes or less.
-   * @returns {string|null} XB64 encoded string, or null if src is null.
-   */
-  encodeFromString: function(src, key) {
-    if (src == null) return null;
-    var a = xb64.UTF8.toByteArray(src);
-    return xb64.encode(a, key);
   },
 
   /**
