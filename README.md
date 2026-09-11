@@ -14,9 +14,9 @@ String decoded = XB64.decodeToString("GRsZAA==", "xyz");
 ```
 
 JavaScript:
-```JavaSctipt
-var encoded = xb64.encode('abc', 'xyz');
-var decoded = xb64.decode('GRsZAA==', 'xyz');
+```JavaScript
+var encoded = xb64.encodeFromString('abc', 'xyz');
+var decoded = xb64.decodeToString('GRsZAA==', 'xyz');
 ```
 
 Python:

@@ -16,7 +16,7 @@ __pycache__/
 
 vba/XB64.xlsm
 vba/~$XB64.xlsm
-js/_linter.txt
-js/.eslintrc.json
+js/eslint.config.mjs
 js/_ESLint.bat
 js/_linter.bat
+js/_linter.txt

@@ -6,50 +6,71 @@
  */
 var xb64 = {
   /**
-   * Plain text / Byte array to XB64 encoded string
+   * Encodes a byte array to an XB64 string.
+   *
+   * If the key is null, undefined, or empty, the source is encoded
+   * as standard Base64 without XOR processing.
+   *
+   * @param {number[]} src Source byte array.
+   * @param {string} key XOR key. The UTF-8 encoded key must be 255 bytes or less.
+   * @returns {string|null} XB64 encoded string, or null if src is null.
    */
-  encode: function(s, k) {
-    if (s == null) return null;
-    var a = ((typeof s == 'string') ? xb64.UTF8.toByteArray(s) : s);
-    var x = xb64.UTF8.toByteArray(k);
-    var b = xb64._encode(a, x);
+  encode: function(src, key) {
+    if (src == null) return null;
+    var k = xb64.UTF8.toByteArray(key);
+    var ln = src.length;
+    var kl = k.length;
+    if ((ln == 0) || (kl == 0)) {
+      var b = src;
+    } else {
+      var d = kl - ln;
+      if (d < 0) d = 0;
+      b = [];
+      for (var i = 0; i < ln; i++) {
+        b.push(src[i] ^ k[i % kl]);
+      }
+      for (i = 0; i < d; i++) {
+        b.push(255 ^ k[(ln + i) % kl]);
+      }
+      b.push(d);
+    }
     return xb64.Base64.encode(b);
   },
 
-  _encode: function(a, k) {
-    var ln = a.length;
-    var kl = k.length;
-    if ((ln == 0) || (kl == 0)) return a;
-    var d = kl - ln;
-    if (d < 0) d = 0;
-    var b = [];
-    for (var i = 0; i < ln; i++) {
-      b.push(a[i] ^ k[i % kl]);
-    }
-    var n = i;
-    for (i = 0; i < d; i++) {
-      b.push(255 ^ k[(n + i) % kl]);
-    }
-    b.push(d);
-    return b;
+  /**
+   * Encodes a string to an XB64 string.
+   *
+   * The source string is converted to UTF-8 before XB64 encoding.
+   * If the key is null, undefined, or empty, the UTF-8 byte sequence
+   * is encoded as standard Base64 without XOR processing.
+   *
+   * @param {string} src Source string.
+   * @param {string} key XOR key. The UTF-8 encoded key must be 255 bytes or less.
+   * @returns {string|null} XB64 encoded string, or null if src is null.
+   */
+  encodeFromString: function(src, key) {
+    if (src == null) return null;
+    var a = xb64.UTF8.toByteArray(src);
+    return xb64.encode(a, key);
   },
 
   /**
-   * XB64 encoded string to Byte array / Plain text
+   * Decodes an XB64 string to a byte array.
+   *
+   * If the key is null, undefined, or empty, the source is decoded
+   * as standard Base64 without XOR processing.
+   *
+   * @param {string} src XB64 encoded string.
+   * @param {string} key XOR key used for encoding.
+   * @returns {number[]|null} Decoded byte array, or null if src is null.
    */
-  decode: function(s, k, byB) {
-    if (s == null) return null;
-    var b = xb64.Base64.decode(s);
-    var x = xb64.UTF8.toByteArray(k);
-    var a = xb64._decode(b, x);
-    if (!byB) a = xb64.UTF8.fromByteArray(a);
-    return a;
-  },
-
-  _decode: function(a, k) {
+  decode: function(src, key) {
+    if (src == null) return null;
+    var a = xb64.Base64.decode(src);
+    var k = xb64.UTF8.toByteArray(key);
     var al = a.length;
     var kl = k.length;
-    if ((al == 0) || (kl == 0)) return a;
+    if ((al == 0) || (kl == 0)) return a.slice();
     var d = a[al - 1];
     var ln = al - d - 1;
     var b = [];
@@ -57,6 +78,21 @@ var xb64 = {
       b.push(a[i] ^ k[i % kl]);
     }
     return b;
+  },
+
+  /**
+   * Decodes an XB64 string to a string.
+   *
+   * The decoded byte array is interpreted as UTF-8.
+   *
+   * @param {string} src XB64 encoded string.
+   * @param {string} key XOR key used for encoding.
+   * @returns {string|null} Decoded string, or null if src is null.
+   */
+  decodeToString: function(src, key) {
+    if (src == null) return null;
+    var a = xb64.decode(src, key);
+    return xb64.UTF8.fromByteArray(a);
   },
 
   Base64: {

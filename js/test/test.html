@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>XB64 Test</title>
+<script src="https://debugjs.net/debug.js"></script>
+<script src="../xb64.js"></script>
+<style>
+body {
+  font-family: Consolas, Monaco, Menlo, monospace, sans-serif;
+}
+</style>
+<script>
+onReady = function() {
+  var s = document.getElementById('test-script').innerText;
+  dbg.show();
+  dbg.bat(s);
+};
+window.addEventListener('DOMContentLoaded', onReady, true);
+</script>
+</head>
+<body>
+<pre id="test-script">
+#!BAT!
+close all
+cls
+test init
+
+!__JS__!
+$TEST_DATA = [
+  {src: '', key: '', b64: ''},
+  {src: '', key: 'x', b64: ''},
+  {src: 'abc', key: '', b64: 'YWJj'},
+  {src: 'abc', key: 'x', b64: 'GRobAA=='},
+  {src: 'abc', key: 'xyz', b64: 'GRsZAA=='},
+  {src: 'abc', key: 'xyz1', b64: 'GRsZzgE='},
+  {src: 'a', key: 'A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#', b64: 'IM3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvc/g=='},
+  {src: 'あいう', key: '', b64: '44GC44GE44GG'},
+  {src: 'あいう', key: 'x', b64: 'm/n6m/n8m/n+AA=='},
+  {src: 'あいう', key: 'xyz', b64: 'm/j4m/j+m/j8AA=='},
+  {src: 'あいう', key: 'xyz123456a', b64: 'm/j40rO317SwngE='}
+]
+!__JS__!
+
+#----------------------------------------------------------
+test set id "ms2str"
+
+${i} = 0
+LOOP (${i} < $TEST_DATA.length) (
+  ${ret} = xb64.encodeFromString($TEST_DATA[${i}].src, $TEST_DATA[${i}].key)
+  test verify ${ret} == $TEST_DATA[${i}].b64
+  ${i}++
+)
+
+${i} = 0
+LOOP (${i} < $TEST_DATA.length) (
+  ${ret} = xb64.decodeToString($TEST_DATA[${i}].b64, $TEST_DATA[${i}].key)
+  test verify ${ret} == $TEST_DATA[${i}].src
+  ${i}++
+)
+
+test end
+test result
+</pre>
+</body>
+</html>
