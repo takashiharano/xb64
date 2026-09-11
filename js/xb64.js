@@ -18,8 +18,8 @@ var xb64 = {
    */
   encode: function(src, key) {
     if (src == null) return null;
-    if (typeof src == 'string') src = xb64.UTF8.toByteArray(src);
-    var k = xb64.UTF8.toByteArray(key);
+    if (typeof src == 'string') src = xb64.utf8.toByteArray(src);
+    var k = xb64.utf8.toByteArray(key);
     var ln = src.length;
     var kl = k.length;
     if ((ln == 0) || (kl == 0)) {
@@ -36,7 +36,7 @@ var xb64 = {
       }
       b.push(d);
     }
-    return xb64.Base64.encode(b);
+    return xb64.base64.encode(b);
   },
 
   /**
@@ -51,8 +51,8 @@ var xb64 = {
    */
   decode: function(src, key) {
     if (src == null) return null;
-    var a = xb64.Base64.decode(src);
-    var k = xb64.UTF8.toByteArray(key);
+    var a = xb64.base64.decode(src);
+    var k = xb64.utf8.toByteArray(key);
     var al = a.length;
     var kl = k.length;
     if ((al == 0) || (kl == 0)) return a.slice();
@@ -77,10 +77,10 @@ var xb64 = {
   decodeToString: function(src, key) {
     if (src == null) return null;
     var a = xb64.decode(src, key);
-    return xb64.UTF8.fromByteArray(a);
+    return xb64.utf8.fromByteArray(a);
   },
 
-  Base64: {
+  base64: {
     encode: function(arr) {
       var len = arr.length;
       if (len == 0) return '';
@@ -134,7 +134,7 @@ var xb64 = {
     }
   },
 
-  UTF8: {
+  utf8: {
     toByteArray: function(s) {
       var a = [];
       if (!s) return a;
