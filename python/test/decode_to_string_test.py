@@ -24,6 +24,5 @@ def main():
     test('', 'x', '')
     test('', '', '')
     test('', None, '')
-    test(None, None, None)
 
 main()

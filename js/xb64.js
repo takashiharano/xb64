@@ -14,10 +14,9 @@ var xb64 = {
    *
    * @param {number[]|string} src Source byte array or string.
    * @param {string} key XOR key. The key length must be 255 bytes or less.
-   * @returns {string|null} XB64 encoded string, or null if src is null.
+   * @returns {string} XB64 encoded string.
    */
   encode: function(src, key) {
-    if (src == null) return null;
     if (typeof src == 'string') src = xb64.utf8.toByteArray(src);
     var k = xb64.utf8.toByteArray(key);
     var ln = src.length;
@@ -47,10 +46,9 @@ var xb64 = {
    *
    * @param {string} src XB64 encoded string.
    * @param {string} key XOR key used for encoding.
-   * @returns {number[]|null} Decoded byte array, or null if src is null.
+   * @returns {number[]} Decoded byte array.
    */
   decode: function(src, key) {
-    if (src == null) return null;
     var a = xb64.base64.decode(src);
     var k = xb64.utf8.toByteArray(key);
     var al = a.length;
@@ -72,10 +70,9 @@ var xb64 = {
    *
    * @param {string} src XB64 encoded string.
    * @param {string} key XOR key used for encoding.
-   * @returns {string|null} Decoded string, or null if src is null.
+   * @returns {string} Decoded string.
    */
   decodeToString: function(src, key) {
-    if (src == null) return null;
     var a = xb64.decode(src, key);
     return xb64.utf8.fromByteArray(a);
   },
@@ -156,7 +153,6 @@ var xb64 = {
     },
 
     fromByteArray: function(b) {
-      if (!b) return null;
       var e = '';
       for (var i = 0; i < b.length; i++) {
         e += '%' + xb64.toHex(b[i]);

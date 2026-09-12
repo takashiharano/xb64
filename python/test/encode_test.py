@@ -23,6 +23,5 @@ def main():
     test('', '', '')
     test('abc', None, 'YWJj')
     test('', None, '')
-    test(None, None, None)
 
 main()

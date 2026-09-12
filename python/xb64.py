@@ -10,9 +10,6 @@ DEFAULT_ENCODING = 'utf-8'
 
 #------------------------------------------------------------------------------
 def encode(src, key='', encoding=DEFAULT_ENCODING):
-    if src is None:
-        return None
-
     if key is None:
         key = ''
 
@@ -50,9 +47,6 @@ def encode(src, key='', encoding=DEFAULT_ENCODING):
 
 #------------------------------------------------------------------------------
 def decode(src, key=''):
-    if src is None:
-        return None
-
     if key is None:
         key = ''
 
@@ -75,9 +69,6 @@ def decode(src, key=''):
     return bytes(b)
 
 def decode_to_string(src, key='', encoding=DEFAULT_ENCODING):
-    if src is None:
-        return None
-
     b = decode(src, key)
     s = b.decode(encoding)
     return s
