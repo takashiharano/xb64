@@ -13,7 +13,7 @@ var xb64 = {
    * as standard Base64 without XOR processing.
    *
    * @param {number[]|string} src Source byte array or string.
-   * @param {string} key XOR key. The UTF-8 encoded key must be 255 bytes or less.
+   * @param {string} key XOR key. The key length must be 255 bytes or less.
    * @returns {string|null} XB64 encoded string, or null if src is null.
    */
   encode: function(src, key) {
@@ -68,7 +68,7 @@ var xb64 = {
   /**
    * Decodes an XB64 string to a string.
    *
-   * The decoded byte array is interpreted as UTF-8.
+   * The decoded data is interpreted as UTF-8.
    *
    * @param {string} src XB64 encoded string.
    * @param {string} key XOR key used for encoding.
