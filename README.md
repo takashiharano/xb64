@@ -1,7 +1,7 @@
 XB64
 =====================
 
-XB64 (XORed Base64) is a simple reversible encoding method based on XOR and Base64 encoding.
+XB64 (XORed Base64) is a simple reversible encoding method for obfuscation based on XOR and Base64 encoding.
 Before being Base64-encoded, the input data is XORed with the provided key.
 The resulting text resembles standard Base64-encoded data, but it cannot be decoded correctly with a standard Base64 decoder alone.
 Details of the algorithm are available at https://libutil.com/xb64/.
