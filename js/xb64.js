@@ -168,7 +168,7 @@ var xb64 = {
   toHex: function(v) {
     var hex = parseInt(v).toString(16).toUpperCase();
     if (hex.length < 2) {
-      hex = ('0' + hex).slice(-2);
+      hex = '0' + hex;
     }
     return hex;
   }
