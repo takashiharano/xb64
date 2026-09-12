@@ -41,4 +41,6 @@ decoded = XB64.DecodeString("GRsZAA==", "xyz")
 ```
 
 ## Notice
-XB64 is not intended to be used where secrecy is of any concern.
+XB64 is intended for obfuscation, not encryption.  
+The key is not intended to be secret. It is a parameter used to reverse the obfuscation, not a cryptographic key.  
+It is not intended to be used where secrecy is of any concern.
