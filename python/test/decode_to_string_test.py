@@ -5,16 +5,11 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import xb64
 
 def test(exp, k, b64):
-    s = xb64.decode(b64, k)
-    st = 'OK' if s == exp else 'NG'
+    s = xb64.decode_to_string(b64, k)
+    st = 'PASS' if s == exp else 'FAIL'
     print('[' + st + '] exp=' + str(exp) + ' got=' + str(s))
 
 def main():
-    test(None, None, None)
-    test('', None, '')
-    test('abc', None, 'YWJj')
-    test('', '', '')
-    test('', 'x', '')
     test('abc', '', 'YWJj')
     test('abc', 'x', 'GRobAA==')
     test('abc', 'xyz', 'GRsZAA==')
@@ -25,5 +20,10 @@ def main():
     test('あいう', 'xyz', 'm/j4m/j+m/j8AA==')
     test('あいう', 'xyz123456a', 'm/j40rO317SwngE=')
     test('', 'x', 'XX==')
+    test('abc', None, 'YWJj')
+    test('', 'x', '')
+    test('', '', '')
+    test('', None, '')
+    test(None, None, None)
 
 main()

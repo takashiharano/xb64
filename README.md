@@ -21,8 +21,8 @@ var decoded = xb64.decodeToString('GRsZAA==', 'xyz');
 
 Python:
 ```Python
-encoded = xb64.encode_string('abc', 'xyz')
-decoded = xb64.decode_string('GRsZAA==', 'xyz')
+encoded = xb64.encode('abc', 'xyz')
+decoded = xb64.decode_to_string('GRsZAA==', 'xyz')
 ```
 
 PowerShell:
