@@ -8,6 +8,8 @@ Before being Base64-encoded, each byte of the input data is XORed with the corre
 
 The resulting text resembles standard Base64-encoded data, but Base64 decoding alone does not restore the original data.
 
+The design keeps the data from being immediately readable while remaining simple enough to be decoded manually if necessary.
+
 Details of the algorithm are available at https://libutil.com/xb64/.
 
 ## Usage
