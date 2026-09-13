@@ -13,28 +13,13 @@ var xb64 = {
    * as standard Base64 without XOR processing.
    *
    * @param {number[]|string} src Source byte array or string.
-   * @param {string} key XOR key. The key length must be 255 bytes or less.
+   * @param {string} key XOR key.
    * @returns {string} XB64 encoded string.
    */
   encode: function(src, key) {
     if (typeof src == 'string') src = xb64.utf8.toByteArray(src);
     var k = xb64.utf8.toByteArray(key);
-    var ln = src.length;
-    var kl = k.length;
-    if ((ln == 0) || (kl == 0)) {
-      var b = src;
-    } else {
-      var d = kl - ln;
-      if (d < 0) d = 0;
-      b = [];
-      for (var i = 0; i < ln; i++) {
-        b.push(src[i] ^ k[i % kl]);
-      }
-      for (i = 0; i < d; i++) {
-        b.push(255 ^ k[(ln + i) % kl]);
-      }
-      b.push(d);
-    }
+    var b = xb64.xor(src, k);
     return xb64.base64.encode(b);
   },
 
@@ -51,16 +36,7 @@ var xb64 = {
   decode: function(src, key) {
     var a = xb64.base64.decode(src);
     var k = xb64.utf8.toByteArray(key);
-    var al = a.length;
-    var kl = k.length;
-    if ((al == 0) || (kl == 0)) return a.slice();
-    var d = a[al - 1];
-    var ln = al - d - 1;
-    var b = [];
-    for (var i = 0; i < ln; i++) {
-      b.push(a[i] ^ k[i % kl]);
-    }
-    return b;
+    return xb64.xor(a, k);
   },
 
   /**
@@ -75,6 +51,26 @@ var xb64 = {
   decodeToString: function(src, key) {
     var a = xb64.decode(src, key);
     return xb64.utf8.fromByteArray(a);
+  },
+
+  /**
+   * XORs a byte array with a repeating key byte array.
+   *
+   * If the source or key is empty, a copy of the source is returned.
+   *
+   * @param {number[]} src Source byte array.
+   * @param {number[]} key XOR key byte array.
+   * @returns {number[]} XORed byte array.
+   */
+  xor: function(src, key) {
+    var ln = src.length;
+    var kl = key.length;
+    if ((ln == 0) || (kl == 0)) return src.slice();
+    var b = [];
+    for (var i = 0; i < ln; i++) {
+      b.push(src[i] ^ key[i % kl]);
+    }
+    return b;
   },
 
   base64: {

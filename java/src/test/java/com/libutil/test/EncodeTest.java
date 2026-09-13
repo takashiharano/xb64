@@ -13,33 +13,30 @@ public class EncodeTest {
   }
 
   private static void encodeTest() {
-    test((byte[]) null, null, null);
-    test((String) null, null, null);
-    test((String) null, "", null);
     test("", null, "");
     test("abc", null, "YWJj");
     test("", "", "");
     test("", "x", "");
     test("abc", "", "YWJj");
-    test("abc", "x", "GRobAA==");
-    test("abc", "xyz", "GRsZAA==");
-    test("abc", "xyz1", "GRsZzgE=");
-    test("a", "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#", "IM3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvc/g==");
+    test("abc", "x", "GRob");
+    test("abc", "xyz", "GRsZ");
+    test("abc", "xyz1", "GRsZ");
+    test("a", "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#", "IA==");
   }
 
   private static void encodeTestJa() {
     test("あいう", "", "44GC44GE44GG");
-    test("あいう", "x", "m/n6m/n8m/n+AA==");
-    test("あいう", "xyz", "m/j4m/j+m/j8AA==");
-    test("あいう", "xyz123456a", "m/j40rO317SwngE=");
+    test("あいう", "x", "m/n6m/n8m/n+");
+    test("あいう", "xyz", "m/j4m/j+m/j8");
+    test("あいう", "xyz123456a", "m/j40rO317Sw");
   }
 
   private static void encodeBytesTest() {
     byte[] b = { (byte) 0x61, (byte) 0x62, (byte) 0x63 };
     test(b, "", "YWJj");
-    test(b, "x", "GRobAA==");
-    test(b, "xyz", "GRsZAA==");
-    test(b, "xyz1", "GRsZzgE=");
+    test(b, "x", "GRob");
+    test(b, "xyz", "GRsZ");
+    test(b, "xyz1", "GRsZ");
   }
 
   private static void test(String s, String key, String expected) {
@@ -65,7 +62,7 @@ public class EncodeTest {
       ok = true;
       op = "==";
     }
-    Log.out("[" + (ok ? "OK" : "NG") + "] " + message + ("".equals(message) ? "" : ": ") + "EXP=" + strExpected + " " + op + " ACTUAL=" + strActual);
+    Log.out("[" + (ok ? "PASS" : "FAIL") + "] " + message + ("".equals(message) ? "" : ": ") + "EXP=" + strExpected + " " + op + " ACTUAL=" + strActual);
     return ok;
   }
 

@@ -51,18 +51,20 @@ function Get-XB64EncodedString {
         $Key
     )
 
-    if ($Src.GetType().Name -eq "String") {
-        $b = [System.Text.Encoding]::UTF8.GetBytes($Src)
-    } else {
-        $b = $Src
+    if ($null -eq $Key) {
+        $Key = ""
     }
 
-    $kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
+    if ($Src -is [string]) {
+        [byte[]]$b = [System.Text.Encoding]::UTF8.GetBytes($Src)
+    } else {
+        [byte[]]$b = $Src
+    }
 
-    $buf = Get-EncodedBytes $b $kb
-    $encoded = [System.Convert]::ToBase64String($buf)
+    [byte[]]$kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
+    [byte[]]$buf = @(Get-XorBytes $b $kb)
 
-    return $encoded
+    return [System.Convert]::ToBase64String($buf)
 }
 
 #------------------------------------------------------------------------------
@@ -74,9 +76,14 @@ function Get-XB64DecodedBytes {
         $Key
     )
 
-    $buf = [System.Convert]::FromBase64String($Src)
-    $kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
-    $arr = Get-DecodedBytes $buf $kb
+    if ($null -eq $Key) {
+        $Key = ""
+    }
+
+    [byte[]]$buf = [System.Convert]::FromBase64String($Src)
+    [byte[]]$kb = [System.Text.Encoding]::UTF8.GetBytes($Key)
+    [byte[]]$arr = @(Get-XorBytes $buf $kb)
+
     return $arr
 }
 
@@ -89,69 +96,30 @@ function Get-XB64DecodedString {
         $Key
     )
 
-    $buf = Get-XB64DecodedBytes $Src $Key
-    if ($buf -eq $null) {
-        return ""
-    }
-    $str = [System.Text.Encoding]::UTF8.GetString($buf)
-    return $str
+    [byte[]]$buf = @(Get-XB64DecodedBytes $Src $Key)
+    return [System.Text.Encoding]::UTF8.GetString($buf)
 }
 
 #------------------------------------------------------------------------------
-function Get-EncodedBytes {
+# XOR byte array with repeating key byte array
+#------------------------------------------------------------------------------
+function Get-XorBytes {
     Param (
         [byte[]]$Src,
         [byte[]]$Key
     )
 
-    if (($Src.Length -eq 0) -or ($Key.Length -eq 0)) {
+    $len = $Src.Length
+    $kl = $Key.Length
+
+    if (($len -eq 0) -or ($kl -eq 0)) {
         return $Src
     }
 
-    $d = $Key.Length - $Src.Length
-    if ($d -lt 0) {
-        $d = 0
-    }
-
-    $buf = New-Object byte[] ($Src.Length + $d + 1)
-
-    for ($i=0; $i -lt $Src.Length; $i++) {
-        $buf[$i] = $Src[$i] -bxor $Key[$i % $Key.Length]
-    }
-
-    $j = $i
-    for ($i=0; $i -lt $d; $i++) {
-        $buf[$j] = (255 -bxor $Key[$j % $Key.Length])
-        $j++
-    }
-
-    $buf[$j] = $d
-
-    return $buf
-}
-
-#------------------------------------------------------------------------------
-function Get-DecodedBytes {
-    Param (
-        [byte[]]$Src,
-        [byte[]]$Key
-    )
-
-    if (($Src.Length -eq 0) -or ($Key.Length -eq 0)) {
-        return $Src
-    }
-
-    $d = $Src[$Src.Length - 1]
-    $len = $Src.Length - $d - 1
-    if ($len -lt 0) {
-        $len = 0
-    }
     $buf = New-Object byte[] ($len)
 
-    $j = 0
-    for ($i=0; $i -lt $len; $i++) {
-        $buf[$j] = $Src[$i] -bxor $Key[$j % $Key.Length]
-        $j++;
+    for ($i = 0; $i -lt $len; $i++) {
+        $buf[$i] = $Src[$i] -bxor $Key[$i % $kl]
     }
 
     return $buf

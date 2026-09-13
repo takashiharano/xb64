@@ -9,21 +9,19 @@ Option Explicit
 '
 Public Function EncodeString(str As String, key As String) As String
     If str = "" Then
-        EncodeString = str
+        EncodeString = ""
         Exit Function
     End If
 
     Dim src() As Byte
-    Dim ret As String
     src = StringToUtf8Bytes(str)
-    ret = Encode(src, key)
 
-    EncodeString = ret
+    EncodeString = Encode(src, key)
 End Function
 
 Public Function Encode(src() As Byte, key As String) As String
     If IsEmptyArray(src) Then
-        Encode = src
+        Encode = ""
         Exit Function
     End If
 
@@ -33,37 +31,10 @@ Public Function Encode(src() As Byte, key As String) As String
     End If
 
     Dim kb() As Byte
-    Dim srcLen As Integer
-    Dim keyLen As Integer
-    Dim d As Integer
     Dim buf() As Byte
-    Dim i As Integer
-    Dim j As Integer
 
     kb = StringToUtf8Bytes(key)
-    srcLen = UBound(src) + 1
-    keyLen = UBound(kb) + 1
-
-    d = keyLen - srcLen
-    If d < 0 Then
-        d = 0
-    End If
-
-    ReDim buf(srcLen + d)
-
-    For i = 0 To (srcLen - 1)
-        buf(i) = src(i) Xor kb(i Mod keyLen)
-    Next
-
-    j = i
-    If d > 0 Then
-        For i = 0 To (d - 1)
-            buf(j) = 255 Xor kb(j Mod keyLen)
-            j = j + 1
-        Next
-    End If
-
-    buf(j) = d
+    buf = XorBytes(src, kb)
 
     Encode = EncodeBase64(buf)
 End Function
@@ -73,20 +44,14 @@ End Function
 '
 Public Function DecodeString(b64 As String, key As String) As String
     If b64 = "" Then
-        DecodeString = b64
+        DecodeString = ""
         Exit Function
     End If
 
-    Dim ret As String
-    If key = "" Then
-        ret = DecodeBase64String(b64)
-    Else
-        Dim buf() As Byte
-        buf = Decode(b64, key)
-        ret = Utf8BytesToString(buf)
-    End If
+    Dim buf() As Byte
+    buf = Decode(b64, key)
 
-    DecodeString = ret
+    DecodeString = Utf8BytesToString(buf)
 End Function
 
 Public Function Decode(b64 As String, key As String) As Byte()
@@ -105,29 +70,35 @@ Public Function Decode(b64 As String, key As String) As Byte()
     End If
 
     Dim kb() As Byte
-    Dim srcLen As Integer
-    Dim keyLen As Integer
-    Dim bufLen As Integer
-    Dim d As Integer
-    Dim buf() As Byte
-    Dim i As Integer
-    Dim j As Integer
 
     kb = StringToUtf8Bytes(key)
+    Decode = XorBytes(src, kb)
+End Function
+
+''
+' XORs a byte array with a repeating key byte array.
+'
+Public Function XorBytes(src() As Byte, key() As Byte) As Byte()
+    If IsEmptyArray(src) Or IsEmptyArray(key) Then
+        XorBytes = src
+        Exit Function
+    End If
+
+    Dim srcLen As Long
+    Dim keyLen As Long
+    Dim buf() As Byte
+    Dim i As Long
+
     srcLen = UBound(src) + 1
-    keyLen = UBound(kb) + 1
+    keyLen = UBound(key) + 1
 
-    d = src(UBound(src))
-    bufLen = srcLen - d - 2
-    ReDim buf(bufLen)
+    ReDim buf(srcLen - 1)
 
-    j = 0
-    For i = 0 To bufLen
-        buf(j) = src(i) Xor kb(j Mod keyLen)
-        j = j + 1
+    For i = 0 To (srcLen - 1)
+        buf(i) = src(i) Xor key(i Mod keyLen)
     Next
 
-    Decode = buf
+    XorBytes = buf
 End Function
 
 ''

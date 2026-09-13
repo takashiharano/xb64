@@ -51,19 +51,13 @@ public class XB64 {
    * @return A String containing the resulting Base64-encoded characters
    */
   public static String encode(byte[] src, String key) {
-    if (src == null) {
-      return null;
-    }
     if (key == null) {
       key = "";
     }
-    byte[] k = null;
-    try {
-      k = key.getBytes(DEFAULT_CHARSET);
-    } catch (UnsupportedEncodingException e) {
-      // never reached
-    }
-    byte[] buf = _encode(src, k);
+
+    byte[] k = key.getBytes(StandardCharsets.UTF_8);
+    byte[] buf = xor(src, k);
+
     String encoded = Base64.getEncoder().encodeToString(buf);
     return encoded;
   }
@@ -97,17 +91,12 @@ public class XB64 {
    * @return An encoded string
    */
   public static String encode(String src, String key, String charsetName) {
-    if (src == null) {
-      return null;
-    }
-    String encoded = null;
     try {
       byte[] srcBytes = src.getBytes(charsetName);
-      encoded = encode(srcBytes, key);
+      return encode(srcBytes, key);
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
-    return encoded;
   }
 
   /**
@@ -125,22 +114,18 @@ public class XB64 {
    *           If decoding fails
    */
   public static byte[] decode(String src, String key) throws RuntimeException {
-    if (src == null) {
-      return null;
-    }
     if (key == null) {
       key = "";
     }
-    byte[] k = key.getBytes(StandardCharsets.UTF_8);
+
     byte[] buf = Base64.getDecoder().decode(src);
-    return _decode(buf, k);
+    byte[] k = key.getBytes(StandardCharsets.UTF_8);
+
+    return xor(buf, k);
   }
 
   /**
-   * Decodes the specified XB64-encoded string into the original string. Performs
-   * Base64 decoding followed by a bitwise XOR between the decoded bytes and the
-   * key.<br>
-   * If the key is empty, normal Base64 decoding is performed.
+   * Decodes the specified XB64-encoded string into the original string.
    *
    * @param src
    *          The string to be decoded
@@ -153,10 +138,7 @@ public class XB64 {
   }
 
   /**
-   * Decodes the specified XB64-encoded string into the original string. Performs
-   * Base64 decoding followed by a bitwise XOR between the decoded bytes and the
-   * key.<br>
-   * If the key is empty, normal Base64 decoding is performed.
+   * Decodes the specified XB64-encoded string into the original string.
    *
    * @param src
    *          The string to be decoded
@@ -167,59 +149,31 @@ public class XB64 {
    * @return A decoded string
    */
   public static String decodeToString(String src, String key, String charsetName) {
-    if (src == null) {
-      return null;
-    }
-    String str = null;
     try {
       byte[] decoded = decode(src, key);
-      str = new String(decoded, charsetName);
+      return new String(decoded, charsetName);
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
-    return str;
   }
 
-  private static byte[] _encode(byte[] src, byte[] key) {
+  /**
+   * XORs a byte array with a repeating key byte array.
+   *
+   * @param src
+   *          The source byte array
+   * @param key
+   *          The XOR key byte array
+   * @return A newly allocated XORed byte array
+   */
+  public static byte[] xor(byte[] src, byte[] key) {
     if ((src.length == 0) || (key.length == 0)) {
-      return src;
+      return src.clone();
     }
 
-    int d = key.length - src.length;
-    if (d < 0) {
-      d = 0;
-    }
+    byte[] buf = new byte[src.length];
 
-    byte[] buf = new byte[src.length + d + 1];
-
-    int i;
-    for (i = 0; i < src.length; i++) {
-      buf[i] = (byte) (src[i] ^ key[i % key.length]);
-    }
-
-    int j = i;
-    for (i = 0; i < d; i++) {
-      buf[j] = (byte) (255 ^ key[j]);
-      j++;
-    }
-
-    buf[j] = (byte) d;
-    return buf;
-  }
-
-  private static byte[] _decode(byte[] src, byte[] key) {
-    if ((src.length == 0) || (key.length == 0)) {
-      return src;
-    }
-
-    int d = src[src.length - 1] & 255;
-    int len = src.length - d - 1;
-    if (len < 0) {
-      len = 0;
-    }
-    byte[] buf = new byte[len];
-
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < src.length; i++) {
       buf[i] = (byte) (src[i] ^ key[i % key.length]);
     }
 

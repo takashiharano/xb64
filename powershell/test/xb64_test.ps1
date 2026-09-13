@@ -1,59 +1,74 @@
 . "..\xb64.ps1"
 
+$TEST_DATA = @(
+    @{ Src = "";       Key = "";             B64 = "" }
+    @{ Src = "";       Key = "x";            B64 = "" }
+    @{ Src = "";       Key = $null;           B64 = "" }
+    @{ Src = "abc";    Key = "";             B64 = "YWJj" }
+    @{ Src = "abc";    Key = $null;           B64 = "YWJj" }
+    @{ Src = "abc";    Key = "x";            B64 = "GRob" }
+    @{ Src = "abc";    Key = "xyz";          B64 = "GRsZ" }
+    @{ Src = "abc";    Key = "xyz1";         B64 = "GRsZ" }
+    @{
+        Src = "a"
+        Key = "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#"
+        B64 = "IA=="
+    }
+    @{ Src = "‚ ‚¢‚¤"; Key = "";             B64 = "44GC44GE44GG" }
+    @{ Src = "‚ ‚¢‚¤"; Key = "x";            B64 = "m/n6m/n8m/n+" }
+    @{ Src = "‚ ‚¢‚¤"; Key = "xyz";          B64 = "m/j4m/j+m/j8" }
+    @{ Src = "‚ ‚¢‚¤"; Key = "xyz123456a";   B64 = "m/j40rO317Sw" }
+)
+
 function Test-Encoding {
     Param (
         $Src,
-        $Key
+        $Key,
+        $Expected
     )
-    $s = Get-XB64EncodedString $Src $Key
-    Write-Host $s
+
+    $got = Get-XB64EncodedString $Src $Key
+    $status = if ($got -eq $Expected) { "PASS" } else { "FAIL" }
+
+    Write-Host "[$status] src=`"$Src`" key=`"$Key`" exp=`"$Expected`" got=`"$got`""
+
+    return ($got -eq $Expected)
 }
 
 function Test-Decoding {
     Param (
-        $B64,
-        $Key
+        $Src,
+        $Key,
+        $B64
     )
-    $s = Get-XB64DecodedString $B64 $Key
-    $res = "`"" + $s + "`""
-    Write-Host $res
+
+    $got = Get-XB64DecodedString $B64 $Key
+    $status = if ($got -eq $Src) { "PASS" } else { "FAIL" }
+
+    Write-Host "[$status] src=`"$Src`" key=`"$Key`" b64=`"$B64`" got=`"$got`""
+
+    return ($got -eq $Src)
 }
 
-Write-Host "-------------------------------"
-Write-Host "Encode"
-Write-Host "-------------------------------"
-Test-Encoding "abc" ""
-Test-Encoding "abc" "x"
-Test-Encoding "abc" "xyz"
-Test-Encoding "abc" "xyz1"
-Test-Encoding "a" "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#"
-Test-Encoding "‚ ‚¢‚¤" "x"
-Test-Encoding "‚ ‚¢‚¤" "xyz"
-Test-Encoding "‚ ‚¢‚¤" "xyz123456a"
+$passed = 0
+$total = 0
 
-Write-Host "-------------------------------"
-Write-Host "Decode"
-Write-Host "-------------------------------"
-Test-Decoding "YWJj" ""
-Test-Decoding "GRobAA==" "x"
-Test-Decoding "GRsZAA==" "xyz"
-Test-Decoding "GRsZzgE=" "xyz1"
-Test-Decoding "IM3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvKycjHxs/OzczLysnIx8bPzs3My8rJyMfGz87NzMvc/g==" "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#"
-Test-Decoding "m/n6m/n8m/n+AA==" "x"
-Test-Decoding "m/j4m/j+m/j8AA==" "xyz"
-Test-Decoding "m/j40rO317SwngE=" "xyz123456a"
+Write-Host "Encoding"
+foreach ($t in $TEST_DATA) {
+    if (Test-Encoding $t.Src $t.Key $t.B64) {
+        $passed++
+    }
+    $total++
+}
 
+Write-Host ""
+Write-Host "Decoding"
+foreach ($t in $TEST_DATA) {
+    if (Test-Decoding $t.Src $t.Key $t.B64) {
+        $passed++
+    }
+    $total++
+}
 
-Write-Host "Incorrect:"
-Test-Decoding "XX==" "x"
-
-Write-Host "w/ Wrong key:"
-Test-Decoding "GRsZAA==" "123"
-
-Write-Host "-------------------------------"
-[byte[]]$b = Get-Content "C:\test\img.jpg" -Encoding Byte
-$s = Get-XB64EncodedString $b "xyz"
-Write-Host $s
-
-$b = Get-XB64DecodedBytes $s "xyz"
-Set-Content "C:\tmp\img.jpg" -Value $b -Encoding Byte
+Write-Host ""
+Write-Host "$passed/$total tests passed"
