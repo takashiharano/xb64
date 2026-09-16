@@ -1,10 +1,10 @@
 # XB64
 
-XB64 (XORed Base64) is a simple reversible encoding method for obfuscation based on XOR and Base64 encoding.
+XB64 (XORed Base64) is a simple XOR-based cipher whose output is encoded in Base64.
 
 It is intended for lightweight obfuscation in environments where data would otherwise have to be stored or transmitted as plain text.
 
-Before being Base64-encoded, each byte of the input data is XORed with the corresponding byte of the key. The key is repeated as needed to match the length of the input.
+Before being Base64-encoded, the input data is XORed with the provided key.
 
 The resulting text resembles standard Base64-encoded data, but Base64 decoding alone does not restore the original data.
 
@@ -53,6 +53,6 @@ decoded = XB64.DecodeString("GRsZ", "xyz")
 
 ## Notice
 
-XB64 is intended for obfuscation, not encryption.
-The key need not be kept secret; it is simply a parameter used to reverse the obfuscation, not a cryptographic key.
-It is not intended to be used where secrecy is of any concern.
+XB64 is intended for obfuscation, not for providing confidentiality.
+The key is simply a parameter used in the reversible transformation; the scheme does not rely on it being secret.
+This method should not be used where confidentiality must be assured.
