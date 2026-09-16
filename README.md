@@ -54,5 +54,7 @@ decoded = XB64.DecodeString("GRsZ", "xyz")
 ## Notice
 
 XB64 is intended for obfuscation, not for providing confidentiality.
+
 The key is simply a parameter used in the reversible transformation; the scheme does not rely on it being secret.
+
 This method should not be used where confidentiality must be assured.
