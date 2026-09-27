@@ -1,8 +1,8 @@
 # XB64
 
-XB64 (XORed Base64) is a simple XOR-based cipher whose output is encoded in Base64.
+XB64 (XORed Base64) is a simple keyed reversible transformation for lightweight data obfuscation, with its output encoded in Base64.
 
-It is intended for lightweight obfuscation in environments where data would otherwise have to be stored or transmitted as plain text.
+It is intended for environments where data would otherwise have to be stored or transmitted as plain text.
 
 Before being Base64-encoded, the input data is XORed with the provided key.
 
