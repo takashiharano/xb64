@@ -109,7 +109,7 @@ var xb64 = {
       var buf = [];
       for (i = 0; i < str.length; i += 4) {
         for (var j = 0; j < 4; j++) {
-          buf[j] = tbl[str.charCodeAt(i + j) || 0];
+          buf[j] = (i + j < str.length ? tbl[str.charCodeAt(i + j)] : 64);
         }
         arr.push(
           buf[0] << 2 | (buf[1] & 63) >>> 4,
