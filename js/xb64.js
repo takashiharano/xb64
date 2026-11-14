@@ -66,9 +66,14 @@ var xb64 = {
     var ln = src.length;
     var kl = key.length;
     if ((ln == 0) || (kl == 0)) return src.slice();
-    var b = [];
+    var b = new Array(ln);
+    var kIdx = 0;
     for (var i = 0; i < ln; i++) {
-      b.push(src[i] ^ key[i % kl]);
+      b[i] = src[i] ^ key[kIdx];
+      kIdx++;
+      if (kIdx == kl) {
+        kIdx = 0;
+      }
     }
     return b;
   },
