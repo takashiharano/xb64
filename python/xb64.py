@@ -48,11 +48,16 @@ def xor(src, key):
     if ln == 0 or kl == 0:
         return bytes(src)
 
-    b = []
-    for i in range(ln):
-        b.append(src[i] ^ key[i % kl])
+    repeats = ln // kl
+    if ln % kl != 0:
+        repeats += 1
+    repeated_key = (key * repeats)[:ln]
 
-    return bytes(b)
+    src_int = int.from_bytes(src, 'little')
+    key_int = int.from_bytes(repeated_key, 'little')
+    result_int = src_int ^ key_int
+
+    return result_int.to_bytes(ln, 'little')
 
 if __name__ == '__main__':
     print(__file__)
