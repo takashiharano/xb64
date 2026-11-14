@@ -172,9 +172,15 @@ public class XB64 {
     }
 
     byte[] buf = new byte[src.length];
+    int keyIndex = 0;
 
     for (int i = 0; i < src.length; i++) {
-      buf[i] = (byte) (src[i] ^ key[i % key.length]);
+      buf[i] = (byte) (src[i] ^ key[keyIndex]);
+
+      keyIndex++;
+      if (keyIndex == key.length) {
+        keyIndex = 0;
+      }
     }
 
     return buf;
