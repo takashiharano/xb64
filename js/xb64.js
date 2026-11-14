@@ -100,11 +100,22 @@ var xb64 = {
 
     decode: function(str) {
       var arr = [];
-      if (str.length == 0) return arr;
-      for (var i = 0; i < str.length; i++) {
+      var len = str.length;
+      if (len == 0) return arr;
+      if (len % 4 == 1) {
+        throw new Error('invalid Base64 length: ' + len);
+      }
+      for (var i = 0; i < len; i++) {
         var c = str.charCodeAt(i);
         if (!(((c >= 0x30) && (c <= 0x39)) || ((c >= 0x41) && (c <= 0x5A)) || ((c >= 0x61) && (c <= 0x7A)) || (c == 0x2B) || (c == 0x2F) || (c == 0x3D))) {
-          throw new Error('invalid b64 char: 0x' + c.toString(16).toUpperCase() + ' at ' + i);
+          throw new Error('invalid Base64 char: 0x' + c.toString(16).toUpperCase() + ' at ' + i);
+        }
+      }
+      var padIndex = str.indexOf('=');
+      if (padIndex >= 0) {
+        var padCount = len - padIndex;
+        if ((len % 4 != 0) || (padCount > 2) || ((padCount == 2) && (str.charAt(len - 1) != '='))) {
+          throw new Error('invalid Base64 padding at ' + padIndex);
         }
       }
       var tbl = {61: 64, 47: 63, 43: 62};
