@@ -1,13 +1,17 @@
 . "..\xb64.ps1"
 
 $TEST_DATA = @(
+    @{ Src = "abc";    Key = "xyz";          B64 = "GRsZ" }
+    @{ Src = "abcde";  Key = "xyz";          B64 = "GRsZHBw=" }
+    @{ Src = "ab";     Key = "xyz";          B64 = "GRs=" }
+    @{ Src = "";       Key = "xyz";          B64 = "" }
+    @{ Src = "abc";    Key = "";             B64 = "YWJj" }
+
     @{ Src = "";       Key = "";             B64 = "" }
     @{ Src = "";       Key = "x";            B64 = "" }
-    @{ Src = "";       Key = $null;           B64 = "" }
-    @{ Src = "abc";    Key = "";             B64 = "YWJj" }
-    @{ Src = "abc";    Key = $null;           B64 = "YWJj" }
+    @{ Src = "";       Key = $null;          B64 = "" }
+    @{ Src = "abc";    Key = $null;          B64 = "YWJj" }
     @{ Src = "abc";    Key = "x";            B64 = "GRob" }
-    @{ Src = "abc";    Key = "xyz";          B64 = "GRsZ" }
     @{ Src = "abc";    Key = "xyz1";         B64 = "GRsZ" }
     @{
         Src = "a"

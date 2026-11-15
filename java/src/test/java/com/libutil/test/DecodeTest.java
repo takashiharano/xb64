@@ -13,14 +13,15 @@ public class DecodeTest {
   }
 
   private static void decodeTest() {
-    test("", null, "");
-    test("YWJj", null, "abc");
-    test("", "", "");
-    test("", "x", "");
-    test("YWJj", "", "abc");
-    test("GRob", "x", "abc");
     test("GRsZ", "xyz", "abc");
-    test("GRsZ", "xyz1", "abc");
+    test("GRsZHBw=", "xyz", "abcde");
+    test("GRs=", "xyz", "ab");
+    test("", "xyx", "");
+    test("YWJj", "", "abc");
+    test("YWJj", null, "abc");
+    test("GRob", "x", "abc");
+    test("", "", "");
+    test("", null, "");
     test("IA==", "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#", "a");
   }
 

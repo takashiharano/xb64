@@ -13,14 +13,15 @@ public class EncodeTest {
   }
 
   private static void encodeTest() {
-    test("", null, "");
-    test("abc", null, "YWJj");
-    test("", "", "");
-    test("", "x", "");
-    test("abc", "", "YWJj");
-    test("abc", "x", "GRob");
     test("abc", "xyz", "GRsZ");
-    test("abc", "xyz1", "GRsZ");
+    test("abcde", "xyz", "GRsZHBw=");
+    test("ab", "xyz", "GRs=");
+    test("", "xyz", "");
+    test("abc", "", "YWJj");
+    test("abc", null, "YWJj");
+    test("abc", "x", "GRob");
+    test("", "", "");
+    test("", null, "");
     test("a", "A2345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234#", "IA==");
   }
 
